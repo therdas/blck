@@ -1,0 +1,3 @@
+blck.config.read-blckrc () {
+    
+}

@@ -1,5 +1,5 @@
-source ~/.trd.segment
-source ~/.trd.stdlib
+import lib.std.all
+import lib.segment
 
 blck.prompt.update_one() {
   local prompt=$1

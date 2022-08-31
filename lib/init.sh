@@ -1,9 +1,9 @@
-source ~/.trd.read_blckrc
+import lib.config
 
 declare -g -A __blck_otprompt_segments
 declare -g -A __blck_otprompt_processed
 
-blck/config/read-blckrc "~/.blckrc" ".blckrc"
+blck.config.read-blckrc "~/.blckrc" ".blckrc"
 
 # OPTS
 __blck_pad=' '
@@ -47,7 +47,7 @@ __blck_trprompt_segments=(
 
 
 __blck_blprompt_segments=(
-  "❱:&prev_status:&prev_status_bg"
+  "❱:DEFAULT:DEFAULT"
 )
 
 

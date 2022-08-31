@@ -1,11 +1,24 @@
-source $BLCK_PATH/lib/std/all.sh
-source $BLCK_PATH/lib/prompt.sh
+function import(){
+  if [ "$#" -eq 1 ]; then
+    source $BLCK_HOME/${1//\./\/}.sh
+  fi
+}
+
+__blck_theme="pumpkin-spice"
+
+import lib.std.all
+import lib.theme
+
+blck.theme.set $__blck_theme
+
+import lib.prompt
+import lib.init
+import lib.cmd
+import lib.functs
 
 setopt  prompt_subst
 setopt  inc_append_history_time
 autoload -Uz vcs_info
-
-source $BLCK_PATH/lib/init.sh
 
 function echohey() {
   echo "hey"
@@ -31,7 +44,6 @@ function precmd() {
     sed -i '$d' "$HOME/.trd.termcap"
   fi
   
-  # set -o localoptions -o extendedglob
   if [ $__blck_temp_timer ]; then
     local now=$(($(date +%s%0N)/1000000))
     __blck_time_lst=$(($now-$__blck_temp_timer))
@@ -85,11 +97,9 @@ function _reset-prompt-and-accept-line {
 }
 
 
-source $BLCK_PATH/lib/cmd.sh
 blck() {
   case "$1" in 
-    'set-theme') blck.cmd.change_theme "${@:2}";;
-    'switch-palette') blck.cmd.change_palette "${@:2}";;
+    'theme') blck.cmd.theme_dispatch "${@:2}";;
     'palette') blck.palette.dispatch "${@:2}";;
     'refresh') blck.cmd.reinit; blck.cmd.change_theme $__blck_theme;;
     'reset') blck.cmd.reinit;;
@@ -99,7 +109,8 @@ blck() {
 
 
 
-source $BLCK_PATH/themes/pumpkin-spice.zsh-theme
+source $BLCK_HOME/themes/pumpkin-spice.zsh-theme
+
 if [ $__blck_f_enable_git -eq 0 ]; then
   zstyle ':vcs_info:*' enable git
   zstyle ':vcs_info:*' get-revision true
@@ -114,5 +125,5 @@ fi
 
 zle -N accept-line _reset-prompt-and-accept-line
 touch "$HOME/.trd.termcap"
-load-theme '~/.trd.curtheme'
-source $BLCK_PATH/themes/zsh-syntax-highlighting/darkcula.zsh-syntax-theme
+
+source $BLCK_HOME/themes/zsh-syntax-highlighting/darkcula.zsh-syntax-theme

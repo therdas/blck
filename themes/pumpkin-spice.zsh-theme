@@ -18,7 +18,8 @@
 # with the original color as a background. So each 2*n+1 is a bg, and 2*n+2 is fg.
 
 palettes=(
-    '#700142 #D6027E #F431F7 #69156a #DE94F7 #30246D #9A67AB #22135E #B076C4 #3E22AB #A30260 #570133 white red #555555 DEFAULT #404040 DEFAULT #A30260 #570133'
+    '#700142 #D6027E #F431F7 #69156a #DE94F7 #30246D #B076C4 #3E22AB #9A67AB #22135E DEFAULT DEFAULT white red #555555 DEFAULT #404040 DEFAULT red green'
+    '#FF0000 #D6027E #F431F7 #69156a #DE94F7 #30246D #B076C4 #3E22AB #9A67AB #22135E DEFAULT DEFAULT white red #555555 DEFAULT #404040 DEFAULT red green'
 )
 
 #-----------------------------------------------------
@@ -49,31 +50,28 @@ palettes=(
 # >>       If you want to use the character ':' either use Unicode, escape it, or define a dynamic func.
 
 left_prompt=(
-    '%Bλ%b:#700142:#D6027E'
-    'therdas@eos:#F431F7:#69156a'
-    '%1~:#DE94F7:#30246D'
-    '&getpyvenv:#9A67AB:#22135E'
+  '%Bλ%b:@1:@2'
+  'therdas@eos:@3:@4'
+  '%1~:@5:@6'
+  '&blck.functs.env.py_venv:@7:@8'
 )
 
 right_prompt=(
-    '&vcs_info_wrapper:#B076C4:#3E22AB'
-    '&timer-func:#9A67AB:#22135E'
+  '&blck.functs.env.vcs_info:@9:@10'
+  '&blck.functs.exec.timer:@11:@12'
 )
 
 bottom_left_prompt=(
-    "❱:&prev_status:&prev_status_bg"
+  "❱:@19:@20"
 )
 
-__blck_otprompt_segments=(
-  'PS2'      "…:white:red"
-  'echo'     "❱:#555555:DEFAULT"
-  'PS2-echo' "┆:#404040:DEFAULT"
+other_prompts=(
+  'PS2'      "…:@15:@16"
+  'echo'     "❱:@17:@18"
+  'PS2-echo' "┆:@15:@16"
 )
 
 # Options
-# status-err-col-X: color used by built-in function 'get-status-col()'
-#                   X is either bg: background or fg: foreground color
-#                   can be palette ref (@i)
 #          palette: which element of `palettes` array to use to get colors
 #            uname: custom UNAME, do not obtain from env if this is present
 #             host: custom HOSTNAME, do not obtain from env if this is present
@@ -81,24 +79,25 @@ __blck_otprompt_segments=(
 #            lines: no. of prompt lines to use, default 2
 
 blck_config=(
-    'status-err-col-fg'     '#FF0000'
-    'status-err-col-bg'     '#FF5555'
-    'palette'               '2'
+    'palette'               '1'
     'uname'                 'therdas'
     'host'                  'eiar'
     'pad'                   '2'
     'lines'                 '2'
 )
 
-hooks_after_accept=(
-    'therdas.blocky_theme.hook.update_stat_color'
+hooks_after_resize=(
 )
 
 hooks_before_prompt=(
+    'therdas.blocky_theme.hook.update_stat_color'
+)
+
+hooks_before_exec=(
 
 )
 
-hooks_before_enter=(
+hooks_before_accept=(
 
 )
 
