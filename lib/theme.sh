@@ -7,6 +7,8 @@ blck.theme.set() {
     blck.theme.copy-theme-var
     blck.theme.unset-theme-var
     blck.palette.update-palettes
+
+    $__blck_on_theme_load
 }
 
 blck.theme.list() {
@@ -33,8 +35,9 @@ blck.theme.copy-theme-var() {
     __blck_uname="$blck_config[uname]"
     __blck_host="$blck_config[host]"
     __blck_lines="$blck_config[lines]"
+    __blck_on_theme_load="$hook_on_load"
 }
 
 blck.theme.unset-theme-var() {
-    unset palettes left_prompt right_prompt bottom_left_prompt other_prompts blck_config hooks_after_resize hooks_before_prompt hooks_before_exec hooks_before_accept
+    unset hook_on_load palettes left_prompt right_prompt bottom_left_prompt other_prompts blck_config hooks_after_resize hooks_before_prompt hooks_before_exec hooks_before_accept
 }

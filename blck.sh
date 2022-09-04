@@ -38,11 +38,6 @@ function precmd() {
 
   zparseopts -D -E -- \
         -noecho=ne
-
-  if [ -z $ne ]; then
-    tmux capture-pane -pS - > "$HOME/.trd.termcap"
-    sed -i '$d' "$HOME/.trd.termcap"
-  fi
   
   if [ $__blck_temp_timer ]; then
     local now=$(($(date +%s%0N)/1000000))
@@ -65,18 +60,10 @@ function precmd() {
 
 
 TRAPWINCH () {
-  clear
-  cat "$HOME/.trd.termcap"
-
   # This is where the hooks are processed
   for i in "$__blck_hooks_post_resize[@]"; do
     $i
   done
-
-  print -P "%F{#484848}𝒊 resized terminal%f"
-
-  precmd --noecho
-  zle reset-prompt 
 }
 
 function _reset-prompt-and-accept-line {

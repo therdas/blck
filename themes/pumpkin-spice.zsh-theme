@@ -87,10 +87,12 @@ blck_config=(
 )
 
 hooks_after_resize=(
+    'therdas.blocky_theme.hook.resize'
 )
 
 hooks_before_prompt=(
     'therdas.blocky_theme.hook.update_stat_color'
+    'therdas.blocky_theme.hook.save_curpos'
 )
 
 hooks_before_exec=(
@@ -100,6 +102,8 @@ hooks_before_exec=(
 hooks_before_accept=(
 
 )
+
+hook_on_load="therdas.blocky_theme.hook.on_startup"
 
 #-----------------------------------------------------
 # Dynamic Functions
@@ -170,3 +174,39 @@ therdas.blocky_theme.hook.update_stat_color() {
         blck.palette.update -2 '#FF7777'
     fi
 }
+
+# There is one special hook: hook_on_startup. Be careful that this hook WILL run every startup
+# and for blck, that means every theme change, and that this isn't an array, but a function name.
+
+therdas.blocky_theme.hook.on_startup() {
+  setopt ZLE
+
+  blck.misc.clear
+
+  # if [ "$TMUX" = "" ]; then exec tmux; fi
+}
+
+therdas.blocky_theme.hook.save_curpos() {
+  # tput smcup
+}
+
+therdas.blocky_theme.hook.resize() {
+  sleep 0.1
+  tput cuu1
+  tput cuu1
+  tput cuu1
+  tput el1
+  tput ed
+  echo "Terminal Resized, you may see some space or dups. Sorry bout that"
+
+  tput cup `tput lines` 0
+  precmd
+  zle reset-prompt 
+}
+
+# therdas.blocky_theme.hook.preserve_on_resize_buffer() {
+#   if [ -z $ne ]; then
+#     tmux capture-pane -pS - > "$HOME/.trd.termcap"
+#     sed -i '$d' "$HOME/.trd.termcap"
+#   fi
+# }
