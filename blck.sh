@@ -4,8 +4,6 @@ function import(){
   fi
 }
 
-__blck_theme="pumpkin-spice"
-
 import lib.std.all
 import lib.theme
 
@@ -15,14 +13,12 @@ import lib.prompt
 import lib.init
 import lib.cmd
 import lib.functs
+import hooks.resize
+import lib.config
 
 setopt  prompt_subst
 setopt  inc_append_history_time
 autoload -Uz vcs_info
-
-function echohey() {
-  echo "hey"
-}
 
 function preexec() {
   __blck_temp_timer="$(($(date +%s%0N)/1000000))"
@@ -56,8 +52,6 @@ function precmd() {
   __blck_f_is_new_cmd=0
   unset __blck_temp_timer
 }
-
-
 
 TRAPWINCH () {
   # This is where the hooks are processed
@@ -94,10 +88,6 @@ blck() {
   esac
 }
 
-
-
-source $BLCK_HOME/themes/pumpkin-spice.zsh-theme
-
 if [ $__blck_f_enable_git -eq 0 ]; then
   zstyle ':vcs_info:*' enable git
   zstyle ':vcs_info:*' get-revision true
@@ -111,6 +101,8 @@ else
 fi
 
 zle -N accept-line _reset-prompt-and-accept-line
-touch "$HOME/.trd.termcap"
 
-source $BLCK_HOME/themes/zsh-syntax-highlighting/darkcula.zsh-syntax-theme
+blck.theme.set $__blck_opts[theme]
+
+import plugins.manager
+blck.plugins.load

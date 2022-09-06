@@ -18,8 +18,9 @@
 # with the original color as a background. So each 2*n+1 is a bg, and 2*n+2 is fg.
 
 palettes=(
-    '#700142 #D6027E #F431F7 #69156a #DE94F7 #30246D #B076C4 #3E22AB #9A67AB #22135E DEFAULT DEFAULT white red #555555 DEFAULT #404040 DEFAULT red green'
-    '#FF0000 #D6027E #F431F7 #69156a #DE94F7 #30246D #B076C4 #3E22AB #9A67AB #22135E DEFAULT DEFAULT white red #555555 DEFAULT #404040 DEFAULT red green'
+  '#700142 #D6027E #F431F7 #69156a #DE94F7 #30246D #B076C4 #3E22AB #9A67AB #22135E DEFAULT DEFAULT white red #555555 DEFAULT #404040 DEFAULT red green'
+  '#FF0000 #D6027E #F431F7 #69156a #DE94F7 #30246D #B076C4 #3E22AB #9A67AB #22135E DEFAULT DEFAULT white red #555555 DEFAULT #404040 DEFAULT red green'
+  '#F5B74A #F35C04 #b24201 #F28807 #b04203 #F5B74A #4084bf #00315B #bacdde #005AA8 #F35C04 #bd4805 #F28807 #bd4805 #777777 default #F35C04'
 )
 
 #-----------------------------------------------------
@@ -50,24 +51,24 @@ palettes=(
 # >>       If you want to use the character ':' either use Unicode, escape it, or define a dynamic func.
 
 left_prompt=(
+  '&blck.functs.env.py_venv:@7:@8'
   '%Bλ%b:@1:@2'
   'therdas@eos:@3:@4'
   '%1~:@5:@6'
-  '&blck.functs.env.py_venv:@7:@8'
 )
 
 right_prompt=(
   '&blck.functs.env.vcs_info:@9:@10'
-  '&blck.functs.exec.timer:@11:@12'
+  '&blck.functs.exec.timer:@7:@8'
 )
 
 bottom_left_prompt=(
-  "❱:@19:@20"
+  "❱:@13:@14"
 )
 
 other_prompts=(
   'PS2'      "…:@15:@16"
-  'echo'     "❱:@17:@18"
+  'echo'     "❱:@2:@16"
   'PS2-echo' "┆:@15:@16"
 )
 
@@ -79,20 +80,19 @@ other_prompts=(
 #            lines: no. of prompt lines to use, default 2
 
 blck_config=(
-    'palette'               '1'
-    'uname'                 'therdas'
-    'host'                  'eiar'
-    'pad'                   '2'
-    'lines'                 '2'
+  'palette'               '3'
+  'uname'                 'therdas'
+  'host'                  'eiar'
+  'pad'                   '2'
+  'lines'                 '2'
 )
 
 hooks_after_resize=(
-    'therdas.blocky_theme.hook.resize'
+  'therdas.blocky_theme.hook.resize'
 )
 
 hooks_before_prompt=(
-    'therdas.blocky_theme.hook.update_stat_color'
-    'therdas.blocky_theme.hook.save_curpos'
+  'therdas.blocky_theme.hook.update_stat_color'
 )
 
 hooks_before_exec=(
@@ -103,7 +103,7 @@ hooks_before_accept=(
 
 )
 
-hook_on_load="therdas.blocky_theme.hook.on_startup"
+hook_on_load="therdas.blocky_theme.hook.on_theme_load"
 
 #-----------------------------------------------------
 # Dynamic Functions
@@ -167,46 +167,42 @@ therdas.blocky_theme.hook.update_stat_color() {
     #You can also call blck.palette.use_palette x
     #this allows for even more shenanigans, believe it or not :p
     if [ $__blck_last_ecode -eq 0 ]; then
-        blck.palette.update -1 '#570133'
-        blck.palette.update -2 '#A30260'
+        blck.palette.update 13 '#bd4805'
+        blck.palette.update 14 '#F28807'
     else 
-        blck.palette.update -1 '#FF0000'
-        blck.palette.update -2 '#FF7777'
+        blck.palette.update 13 '#d23902'
+        blck.palette.update 14 '#fd9f68'
     fi
 }
 
-# There is one special hook: hook_on_startup. Be careful that this hook WILL run every startup
-# and for blck, that means every theme change, and that this isn't an array, but a function name.
-
-therdas.blocky_theme.hook.on_startup() {
-  setopt ZLE
-
-  blck.misc.clear
-
-  # if [ "$TMUX" = "" ]; then exec tmux; fi
-}
-
-therdas.blocky_theme.hook.save_curpos() {
-  # tput smcup
-}
+alias clear="blck.std.misc.clear-to-bottom"
+alias c=clear
 
 therdas.blocky_theme.hook.resize() {
+  local htd=0
+  local ld="$(blck.hooks.resize.get-line-diff)"
+  local pld="$(blck.hooks.resize.get-prompt-line-diff)"
+
   sleep 0.1
-  tput cuu1
-  tput cuu1
-  tput cuu1
+
+
+  for i in $(seq 1 $pld); do
+    tput cuu1
+    htd=1
+  done
+
+  if [ "$htd" -eq 1 ]; then
+    tput cuu1
+  fi
+
   tput el1
   tput ed
-  echo "Terminal Resized, you may see some space or dups. Sorry bout that"
-
-  tput cup `tput lines` 0
   precmd
   zle reset-prompt 
+
+  blck.hooks.resize.record
 }
 
-# therdas.blocky_theme.hook.preserve_on_resize_buffer() {
-#   if [ -z $ne ]; then
-#     tmux capture-pane -pS - > "$HOME/.trd.termcap"
-#     sed -i '$d' "$HOME/.trd.termcap"
-#   fi
-# }
+therdas.blocky_theme.hook.on_theme_load () {
+  clear
+}

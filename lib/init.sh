@@ -12,8 +12,8 @@ __blck_histfile='.blck_histfile'
 __blck_f_enable_git=0
 __blck_stagedstr='+'
 __blck_unstagedstr='-'
-__blck_formats='%b %u%c'
-__blck_actionformats='%b %u%c'
+__blck_formats='%b%u%c'
+__blck_actionformats='%b%u%c'
 
 __blck_f_is_first=0
 __blck_f_is_new_cmd=0
