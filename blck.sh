@@ -4,6 +4,7 @@ function import(){
   fi
 }
 
+import cmd.manager
 import lib.std.all
 import lib.theme
 
@@ -62,10 +63,10 @@ TRAPWINCH () {
 
 function _reset-prompt-and-accept-line {
   if [ $__blck_f_is_new_cmd -eq 0 ]; then
-    print -Pn "\033[2K\033[A\033[2K\r$__blck_otprompt_processed[echo]"
+    print -Pn "\033[2K\033[A\033[2K\r\n$__blck_otprompt_processed[echo]"
     __blck_f_is_new_cmd=1
   else
-    print -Pn "\033[2K\033[A\033[2K\r$__blck_otprompt_processed[PS2-echo]"
+    print -Pn "\033[2K\033[A\033[2K\r\n$__blck_otprompt_processed[PS2-echo]"
   fi
   printf "%s" "$BUFFER"
 
@@ -77,16 +78,19 @@ function _reset-prompt-and-accept-line {
   zle .accept-line     # Note the . meaning the built-in accept-line.
 }
 
-
 blck() {
-  case "$1" in 
-    'theme') blck.cmd.theme_dispatch "${@:2}";;
-    'palette') blck.palette.dispatch "${@:2}";;
-    'refresh') blck.cmd.reinit; blck.cmd.change_theme $__blck_theme;;
-    'reset') blck.cmd.reinit;;
-    '*') echo "command not supported: try seeing the docs maybe?";;
-  esac
+  blck.cmd.trigger "${@:1}"
 }
+
+# blck() {
+#   case "$1" in 
+#     'theme') blck.cmd.theme_dispatch "${@:2}";;
+#     'palette') blck.palette.dispatch "${@:2}";;
+#     'refresh') blck.cmd.reinit; blck.cmd.change_theme $__blck_theme;;
+#     'reset') blck.cmd.reinit;;
+#     '*') echo "command not supported: try seeing the docs maybe?";;
+#   esac
+# }
 
 if [ $__blck_f_enable_git -eq 0 ]; then
   zstyle ':vcs_info:*' enable git
@@ -106,3 +110,4 @@ blck.theme.set $__blck_opts[theme]
 
 import plugins.manager
 blck.plugins.load
+
