@@ -1,5 +1,5 @@
 # Locals
-
+zmodload zsh/mathfunc
 __blck_hooks_resize_last_lines=''
 __blck_hooks_resize_last_cols=''
 
@@ -11,12 +11,13 @@ blck.hooks.resize.record() {
 blck.hooks.resize.record
 
 blck.hooks.resize.get-prompt-line-diff() {
-    local cur_line="$(tput lines)"
-    local cur_cols="$(tput cols)"
-    local last_cols="$__blck_hooks_resize_last_cols"
-    local line_diff="$(( $last_cols/$cur_cols - 1))"
-
-    echo "$line_diff"
+    local cur_cols="$(tput cols)"".0"
+    local last_cols="$__blck_hooks_resize_last_cols"".0"
+    local diff=0
+    if [ `tput cols` -lt $__blck_hooks_resize_last_cols ]; then
+        diff="$(( int(ceil($last_cols/$cur_cols)) ))"
+    fi
+    echo "$diff"
 }
 
 blck.hooks.resize.get-line-diff() {

@@ -106,6 +106,4 @@ blck.theme.dispatcher() {
 }
 
 # Create CMD Hooks
-echo "REGISTERING"
 blck.cmd.register theme blck.theme.dispatcher
-echo "REGISTERED"

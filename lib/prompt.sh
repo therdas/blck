@@ -14,7 +14,7 @@ blck.prompt.update_one() {
 
 blck.prompt.update() {
   for i in "${__blck_prompt_normal[@]}"; do
-    IFS=' ' read -r prompt_segments prompt_name <<< `echo $i`
+    echo $i | IFS=' ' read -r prompt_segments prompt_name
     blck.prompt.update_one $prompt_name $prompt_segments
   done
 

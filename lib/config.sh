@@ -6,3 +6,8 @@ blck.config.read-blckrc () {
         __blck_opts[$k]="$v"
     done
 }
+
+blck.config.change-blckrc() {
+    new_config="$(cat ~/.blckrc | sed -n 's/^\(\s*\)\([0-9A-Za-z\-]*\)\(\s*=\s*\)\([^ #]*\)\(.*\)$/\1'""$1""'\3'""$2""'\5/')"
+    echo $new_config > ~/.blckrc
+}

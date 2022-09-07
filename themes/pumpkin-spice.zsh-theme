@@ -179,19 +179,17 @@ alias clear="blck.std.misc.clear-to-bottom"
 alias c=clear
 
 therdas.blocky_theme.hook.resize() {
+  blck.hooks.resize.get-prompt-line-diff
+
   local htd=0
   local ld="$(blck.hooks.resize.get-line-diff)"
   local pld="$(blck.hooks.resize.get-prompt-line-diff)"
-
-  sleep 0.1
-
-
   for i in $(seq 1 $pld); do
     tput cuu1
     htd=1
   done
 
-  if [ "$htd" -eq 1 ]; then
+  if [ $htd -eq 0 ]; then
     tput cuu1
   fi
 
