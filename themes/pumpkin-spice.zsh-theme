@@ -23,6 +23,16 @@ palettes=(
   '#F5B74A #F35C04 #b24201 #F28807 #b04203 #F5B74A #4084bf #00315B #bacdde #005AA8 #F35C04 #bd4805 #F28807 #bd4805 #777777 default #F35C04'
 )
 
+# This is only used for identification
+# Personal Advice, usually blck uses the first four colors while displaying a list of palettes
+# so, ensure that your primary palette colors are in the first four slots. To check how this
+# looks, try out `blck palette list`
+palette_aliases=(
+  'debug1'
+  'debug2'
+  'autumn-night'
+)
+
 #-----------------------------------------------------
 # Configuration Options
 #-----------------------------------------------------

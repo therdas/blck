@@ -1,0 +1,32 @@
+#===================================================#
+#       BLCKrc - BLCK Theme Framework Config        #
+#===================================================#
+# Format: As long as a option `opt` is valid, the   #
+#         syntax is simple, just                    #    
+#                                                   #
+#         opt=value                                 #
+#                                                   #
+#         The values should NOT be quoted.          #
+#                                                   #
+#         Comments are preceeded with an #          #
+#         NO SPACES in the value                    #
+#         Denote multiple values with ,             #
+#         Eg: plugins = syntax-highlighting,updater #
+#                                                   #
+# For syntax highlighting, use your editor's high-  #
+# lighter for shell scripts, that should be enough  #
+#                                                   #
+# Will switch later to AskJSON (shhh)               #
+#---------------------------------------------------#
+
+self-update = false                # Turning this on will have no effect :p
+
+theme = pumpkin-spice
+theme-palette = 1
+
+plugins = syntax-highlight,motd
+
+highlighter = zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+highlight-theme = darkcula
+
+motd-file = ~/.blck/motd.txt
