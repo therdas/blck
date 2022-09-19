@@ -298,7 +298,6 @@ if [ $previous_install -eq 0 -a $silent -eq 1 ] ; then
     echo
     if [ $res -eq 1 ]; then
         uninstall
-        inst_zshrc=0
         echo " Removed previous blck installation from your .zshrc!"
     elif [ $res -eq 2 ]; then
         print -P "\n %BThis is what we'll be removing:%b"
@@ -307,20 +306,23 @@ if [ $previous_install -eq 0 -a $silent -eq 1 ] ; then
         read -q flag
         echo
         if [ $flag = 'y' ]; then
-            inst_zshrc=0
             uninstall
             echo " Removed previous blck installation from your .zshrc!"
+        else
+            inst_zshrc = 1
         fi
+    else 
+        inst_zshrc = 1
     fi
 fi
 
 is_installed
 
-if [ $previous_install -eq 1 -a $silent -eq 0 ]; then
+if [ $previous_install -eq 0 -a $silent -eq 0 ]; then
     inst_zshrc=1
 fi
 
-[ $inst_zshrc -eq 0 ] && echo "
+[ $inst_zshrc -eq 0 ] && echo "Writing zshrc" && echo "
 
   # blck Configuration (b336b5ce9b1143e372019e2667d846df)
   # Modifying the previous line ⬆ will prevent blck from uninstalling
