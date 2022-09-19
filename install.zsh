@@ -322,7 +322,7 @@ if [ $previous_install -eq 0 -a $silent -eq 0 ]; then
     inst_zshrc=1
 fi
 
-[ $inst_zshrc -eq 0 ] && echo "Writing zshrc" && echo "
+[ $inst_zshrc -eq 0 ] && echo "
 
   # blck Configuration (b336b5ce9b1143e372019e2667d846df)
   # Modifying the previous line ⬆ will prevent blck from uninstalling
