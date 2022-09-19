@@ -28,5 +28,3 @@ plugins = syntax-highlight,motd
 
 highlighter = zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 highlight-theme = darkcula
-
-motd-file = ~/.blck/motd.txt

@@ -11,9 +11,11 @@ blck.theme.set() {
     source $tpath
     blck.theme.copy-theme-var
     blck.theme.unset-theme-var
-    blck.palette.update-palettes
-
+    blck.palette.refresh-palette
+    
     $__blck_on_theme_load
+
+    blck.config.change-blckrc theme $1
 }
 
 blck.theme.list() {
@@ -40,6 +42,7 @@ blck.theme.copy-theme-var() {
     __blck_hooks_pre_accept=("${hooks_before_accept[@]}")
     __blck_hooks_post_resize=("${hooks_after_resize[@]}")
     __blck_palettes=("${palettes[@]}")
+    __blck_palette_aliases=("${palette_aliases[@]}")
     __blck_use_palette="$blck_config[palette]"
     __blck_uname="$blck_config[uname]"
     __blck_host="$blck_config[host]"
@@ -48,7 +51,7 @@ blck.theme.copy-theme-var() {
 }
 
 blck.theme.unset-theme-var() {
-    unset hook_on_load palettes left_prompt right_prompt bottom_left_prompt other_prompts blck_config hooks_after_resize hooks_before_prompt hooks_before_exec hooks_before_accept
+    unset hook_on_load palettes palette_aliases left_prompt right_prompt bottom_left_prompt other_prompts blck_config hooks_after_resize hooks_before_prompt hooks_before_exec hooks_before_accept
 }
 
 blck.theme.print_cmd_list () {
@@ -59,7 +62,7 @@ blck.theme.print_cmd_list () {
 
 blck.theme.dispatcher() {
     if [ $# -lt 1 ]; then
-        echo "Expecting one action"
+        echo "theme: Expecting one action"
         blck.theme.print_cmd_list
         return
     fi;
@@ -99,7 +102,7 @@ blck.theme.dispatcher() {
 
                 ;;
         *)
-                echo "Invalid keyword at $2"
+                echo "theme: Invalid keyword at '$1'"
                 blck.theme.print_cmd_list
                 ;;
     esac

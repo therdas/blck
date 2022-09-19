@@ -3,7 +3,14 @@ declare -g -A __blck_plugins_map
 blck.plugins.load() {
     IFS=, read -A plugs <<< "$__blck_opts[plugins]"
     for v in "$plugs[@]"; do
-        source $BLCK_HOME/plugins/$v/main.sh
+        if [ -z $v ]; then
+            continue        #This is triggered when a plugin is empty (,,)
+        fi
+        if [ ! -e $BLCK_HOME/plugins/$v/main.sh ]; then
+            print -P "%F{black}%K{yellow}%bwarn%b%k%f plugin manager: Plugin $v not found, ignoring…"
+        else
+            source $BLCK_HOME/plugins/$v/main.sh
+        fi
     done
 }
 

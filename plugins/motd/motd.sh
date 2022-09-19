@@ -1,3 +1,3 @@
 print-motd() {
-    eval "cat $1"
+    print -P $(eval cat $1)
 }
