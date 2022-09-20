@@ -61,19 +61,19 @@ palette_aliases=(
 # >>       If you want to use the character ':' either use Unicode, escape it, or define a dynamic func.
 
 left_prompt=(
+  '&blck.functs.env.py_venv:@7:@8'
+  '%Bλ%b:@1:@2'
+  '&blck.functs.unameAtHost:@3:@4'
+  '%1~:@5:@6'
 )
 
 right_prompt=(
+  '&blck.functs.env.vcs_info:@9:@10'
+  '&blck.functs.exec.timer:@7:@8'
 )
 
 bottom_left_prompt=(
-  '&blck.functs.unameAtHost:@1:@2'
-  '^▶:@2:@4'
-  '%1~:@3:@4'
-  '^▶:@4:@6'
-  '&blck.functs.env.py_venv:@5:@6'
-  '&blck.functs.env.vcs_info:@5:@6'
-  '^▶#:@6:default'
+  "❱:@13:@14"
 )
 
 other_prompts=(
@@ -211,8 +211,7 @@ therdas.blocky_theme.hook.resize() {
 }
 
 therdas.blocky_theme.hook.zle_before_accept() {
-  blck.prompt.set_transient_prompt
-  zle .reset-prompt
+
 }
 
 therdas.blocky_theme.hook.on_theme_load () {

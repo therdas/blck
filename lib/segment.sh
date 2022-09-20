@@ -1,10 +1,25 @@
 blck.segment.interpret-prefix-string() {
   local string=$1
+  local pbk=$__blck_pad
+  if [[ ${string:0:1} == '^' ]]; then
+    string=${string:1}
+    __blck_pad=""
+  fi
+
+  if [[ ${string:0:1} == '#' ]]; then
+    string="$pbk${string:1}"
+    __blck_pad=""
+  fi
+
+  if [[ ${string: -1} == '#' ]]; then
+    string="${string:0: -1}$pbk"
+    __blck_pad=""
+  fi
 
   if [[ ${string:0:1} == '&' ]]; then
     string=${string:1}
     string="$(${string%% })"
-    if [[ -n $string ]];  then
+    if [ -n $string -a ! -z $string ];  then
       echo "$__blck_pad$string$__blck_pad"
     fi
   elif [[ ${string:0:1} == "@" ]]; then
@@ -12,7 +27,9 @@ blck.segment.interpret-prefix-string() {
     string="$__blck_palette[$string]"
     echo "$string"
   else
-    echo "$__blck_pad$string$__blck_pad"
+    if [ ! -z $string ]; then
+      echo "$__blck_pad$string$__blck_pad"
+    fi
   fi
 }
 
@@ -21,6 +38,9 @@ blck.segment.fill() {
         b:=bgcolor f:=color p=pad
 
     local text="$@"
+    if [ -z $text ]; then
+      return 0
+    fi
     echo -n '%F{'"${color[-1]// }"'}%K{'"${bgcolor[-1]// }"'}'"$text"'%f%k'
 }   
 

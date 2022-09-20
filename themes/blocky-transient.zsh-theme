@@ -20,7 +20,7 @@
 palettes=(
   '#700142 #D6027E #F431F7 #69156a #DE94F7 #30246D #B076C4 #3E22AB #9A67AB #22135E DEFAULT DEFAULT white red #555555 DEFAULT #404040 DEFAULT red green'
   '#FF0000 #D6027E #F431F7 #69156a #DE94F7 #30246D #B076C4 #3E22AB #9A67AB #22135E DEFAULT DEFAULT white red #555555 DEFAULT #404040 DEFAULT red green'
-  'red blue #b24201 #F28807 #b04203 #F5B74A #4084bf #00315B #bacdde #005AA8 #F35C04 #bd4805 #F28807 #bd4805 #777777 default #F35C04'
+  '#F5B74A #F35C04 #b24201 #F28807 #b04203 #F5B74A #4084bf #00315B #bacdde #005AA8 #F35C04 #bd4805 #F28807 #bd4805 #777777 default #F35C04'
 )
 
 # This is only used for identification
@@ -63,7 +63,7 @@ palette_aliases=(
 left_prompt=(
   '&blck.functs.env.py_venv:@7:@8'
   '%Bλ%b:@1:@2'
-  'therdas@eos:@3:@4'
+  '&blck.functs.unameAtHost:@3:@4'
   '%1~:@5:@6'
 )
 
@@ -106,14 +106,17 @@ hooks_before_prompt=(
 )
 
 hooks_before_exec=(
-
 )
 
 hooks_before_accept=(
+  'therdas.blocky_theme.hook.zle_before_accept'
+)
 
+hooks_after_accept=(
 )
 
 hook_on_load="therdas.blocky_theme.hook.on_theme_load"
+hook_on_unload="therdas.blocky_theme.hook.on_theme_unload"
 
 #-----------------------------------------------------
 # Dynamic Functions
@@ -175,7 +178,6 @@ hook_on_load="therdas.blocky_theme.hook.on_theme_load"
 
 therdas.blocky_theme.hook.update_stat_color() {
     #You can also call blck.palette.use_palette x
-    #this allows for even more shenanigans, believe it or not :p
     if [ $__blck_last_ecode -eq 0 ]; then
         blck.palette.update 13 '#bd4805'
         blck.palette.update 14 '#F28807'
@@ -185,32 +187,38 @@ therdas.blocky_theme.hook.update_stat_color() {
     fi
 }
 
-alias clear="blck.std.misc.clear-to-bottom"
-alias c=clear
-
 therdas.blocky_theme.hook.resize() {
-  blck.hooks.resize.get-prompt-line-diff
+  # blck.hooks.resize.get-prompt-line-diff
 
-  local htd=0
-  local ld="$(blck.hooks.resize.get-line-diff)"
-  local pld="$(blck.hooks.resize.get-prompt-line-diff)"
-  for i in $(seq 1 $pld); do
-    tput cuu1
-    htd=1
-  done
+  # local htd=0
+  # local ld="$(blck.hooks.resize.get-line-diff)"
+  # local pld="$(blck.hooks.resize.get-prompt-line-diff)"
+  # for i in $(seq 1 $pld); do
+  #   tput cuu1
+  #   htd=1
+  # done
 
-  if [ $htd -eq 0 ]; then
-    tput cuu1
-  fi
+  # if [ $htd -eq 0 ]; then
+  #   tput cuu1
+  # fi
 
-  tput el1
-  tput ed
-  precmd
-  zle reset-prompt 
+  # tput el1
+  # tput ed
+  # precmd
+  # zle reset-prompt 
 
-  blck.hooks.resize.record
+  # blck.hooks.resize.record
+}
+
+therdas.blocky_theme.hook.zle_before_accept() {
+  blck.prompt.set_transient_prompt
+  zle .reset-prompt
 }
 
 therdas.blocky_theme.hook.on_theme_load () {
-  clear
+
+}
+
+therdas.blocky_theme.hook.on_theme_unload() {
+
 }

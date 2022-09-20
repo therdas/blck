@@ -11,6 +11,14 @@ blck.palette.update() {
 }
 
 blck.palette.refresh-palette() {
+    if [ -z "$__blck_use_palette" ]; then
+        return 1
+    fi
+
+    if [ -z "$__blck_palettes[$__blck_use_palette]" ]; then
+        return 1
+    fi
+
     __blck_palette=($(echo $__blck_palettes[$__blck_use_palette]))
 }
 

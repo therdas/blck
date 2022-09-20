@@ -63,7 +63,7 @@ palette_aliases=(
 left_prompt=(
   '&blck.functs.env.py_venv:@7:@8'
   '%Bλ%b:@1:@2'
-  'therdas@eos:@3:@4'
+  '&blck.functs.unameAtHost:@3:@4'
   '%1~:@5:@6'
 )
 
@@ -110,10 +110,14 @@ hooks_before_exec=(
 )
 
 hooks_before_accept=(
+  'therdas.blocky_theme.hook.zle_before_accept'
+)
 
+hooks_after_accept=(
 )
 
 hook_on_load="therdas.blocky_theme.hook.on_theme_load"
+hook_on_unload="therdas.blocky_theme.hook.on_theme_unload"
 
 #-----------------------------------------------------
 # Dynamic Functions
@@ -174,8 +178,8 @@ hook_on_load="therdas.blocky_theme.hook.on_theme_load"
 # pretty mundane.
 
 therdas.blocky_theme.hook.update_stat_color() {
+    echo
     #You can also call blck.palette.use_palette x
-    #this allows for even more shenanigans, believe it or not :p
     if [ $__blck_last_ecode -eq 0 ]; then
         blck.palette.update 13 '#bd4805'
         blck.palette.update 14 '#F28807'
@@ -184,9 +188,6 @@ therdas.blocky_theme.hook.update_stat_color() {
         blck.palette.update 14 '#fd9f68'
     fi
 }
-
-alias clear="blck.std.misc.clear-to-bottom"
-alias c=clear
 
 therdas.blocky_theme.hook.resize() {
   blck.hooks.resize.get-prompt-line-diff
@@ -211,6 +212,19 @@ therdas.blocky_theme.hook.resize() {
   blck.hooks.resize.record
 }
 
+therdas.blocky_theme.hook.zle_before_accept() {
+  blck.prompt.set_transient_prompt
+  zle .reset-prompt
+}
+
+alias clear="blck.std.misc.clear-to-bottom"
+alias c=clear
+
 therdas.blocky_theme.hook.on_theme_load () {
   clear
+}
+
+therdas.blocky_theme.hook.on_theme_unload() {
+  unalias clear
+  unalias c
 }

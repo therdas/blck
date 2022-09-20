@@ -21,7 +21,7 @@
 
 self-update = false                # Turning this on will have no effect :p
 
-theme = pumpkin-spice
+theme = blocky-transient
 theme-palette = 1
 
 plugins = syntax-highlight,motd

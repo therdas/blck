@@ -7,13 +7,22 @@ blck.theme.set() {
         return 1
     fi
 
+    if [ -n $__blck_on_theme_unload ]; then
+        $__blck_on_theme_unload
+    fi
+
     declare -g -A blck_config
+    declare -g -A other_prompts
+
     source $tpath
+    blck.theme.unset-tconf-var
     blck.theme.copy-theme-var
     blck.theme.unset-theme-var
     blck.palette.refresh-palette
     
-    $__blck_on_theme_load
+    if [ -n $__blck_on_theme_load ]; then
+        $__blck_on_theme_load
+    fi
 
     blck.config.change-blckrc theme $1
 }
@@ -32,26 +41,48 @@ blck.theme.install() {
     cp $1 "$BLCK_HOME/themes/$(basename $1 '.zsh-theme').zsh-theme"
 }
 
+blck.theme.unset-tconf-var() {
+    unset __blck_tlprompt_segments __blck_trprompt_segments __blck_blprompt_segments __blck_otprompt_segments __blck_hooks_pre_prompt
+    unset __blck_hooks_pre_exec __blck_hooks_pre_accept __blck_hooks_post_resize __blck_palettes __blck_palette_aliases __blck_use_palette 
+    unset __blck_uname __blck_host __blck_lines __blck_on_theme_load __blck_on_theme_unload __blck_hooks_post_accept
+}
+
 blck.theme.copy-theme-var() {
     __blck_tlprompt_segments=("${left_prompt[@]}")
     __blck_trprompt_segments=("${right_prompt[@]}")
     __blck_blprompt_segments=("${bottom_left_prompt[@]}")
-    __blck_otprompt_segments=("${other_prompts[@]}")
+
+    if [ -n "$other_prompts" ]; then 
+        declare -g -A __blck_otprompt_segments
+        __blck_otprompt_segments=("${(kv)other_prompts[@]}")
+    fi
+
     __blck_hooks_pre_prompt=("${hooks_before_prompt[@]}")
     __blck_hooks_pre_exec=("${hooks_before_exec[@]}")
     __blck_hooks_pre_accept=("${hooks_before_accept[@]}")
+    __blck_hooks_post_accept=("${hooks_after_accept[@]}")
     __blck_hooks_post_resize=("${hooks_after_resize[@]}")
     __blck_palettes=("${palettes[@]}")
     __blck_palette_aliases=("${palette_aliases[@]}")
-    __blck_use_palette="$blck_config[palette]"
-    __blck_uname="$blck_config[uname]"
-    __blck_host="$blck_config[host]"
-    __blck_lines="$blck_config[lines]"
-    __blck_on_theme_load="$hook_on_load"
+
+    if [ -n "$blck_config" ]; then
+        __blck_use_palette="$blck_config[palette]"
+        __blck_uname="$blck_config[uname]"
+        __blck_host="$blck_config[host]"
+        __blck_lines="$blck_config[lines]"
+    fi
+
+    if [ -n $hook_on_load ]; then
+        __blck_on_theme_load="$hook_on_load"
+    fi
+
+    if [ -n $hook_on_unload ]; then
+        __blck_on_theme_unload="$hook_on_unload"
+    fi
 }
 
 blck.theme.unset-theme-var() {
-    unset hook_on_load palettes palette_aliases left_prompt right_prompt bottom_left_prompt other_prompts blck_config hooks_after_resize hooks_before_prompt hooks_before_exec hooks_before_accept
+    unset hook_on_load hook_on_unload palettes palette_aliases left_prompt right_prompt bottom_left_prompt other_prompts blck_config hooks_after_resize hooks_before_prompt hooks_before_exec hooks_before_accept
 }
 
 blck.theme.print_cmd_list () {

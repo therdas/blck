@@ -1,5 +1,9 @@
 __blck_time_suffix=' ⌚'
 
+blck.functs.unameAtHost() {
+    echo "$USER@$HOST"
+}
+
 blck.functs.env.vcs_info() {
   vcs_info
   if [ -z $vcs_info_msg_0_ ]; then return; fi
