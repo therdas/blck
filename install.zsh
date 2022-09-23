@@ -142,7 +142,7 @@ elif [ $res -eq 2 ]; then
     
         print -P " What %F{$ACCENT}theme%f do you want? "
         selections=()
-        for file in "themes/"*".zsh-theme"; do
+        for file in "${0:A:h}/themes/"*".zsh-theme"; do
             selections+="$(basename $file '.zsh-theme')"
         done 
         menu res "${selections[@]}"
@@ -170,7 +170,7 @@ elif [ $res -eq 2 ]; then
         plugins=()
         print -P "\n Which %F{$ACCENT}plugins%f do you want? "
         selections=()
-        for file in "plugins/"*"/"; do
+        for file in "${0:A:h}/plugins/"*"/"; do
             selections+=$(basename $file)
         done
         selections+="Done (Close Menu)"
@@ -269,7 +269,7 @@ END_IDENTIFIER="# End of blck Configuration (1d484a24ce09a4c943b76af8a09b2e26)"
 
 uninstall() {
     txt=$(eval sed \'/$IDENTIFIER\.\*\$/,/$END_IDENTIFIER\.\*\$/\{d\}\' $HOME/\.zshrc)
-    cp $HOME/.zshrc `pwd`/.zshrc-backup
+    cp $HOME/.zshrc ${0:A:h}/.zshrc-backup
     print -P "%F{$GRAY} Making a backup of your .zshrc at "`pwd`"/.zshrc-backup%f"
     echo "$txt" > $HOME/.zshrc
 }
