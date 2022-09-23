@@ -149,7 +149,7 @@ elif [ $res -eq 2 ]; then
         tname="$selections[res]"
 
 
-        source themes/$tname.zsh-theme
+        source ${0:A:h}/themes/$tname.zsh-theme
         pdump() {
         local collist=($(echo "$@"))
         local v=0
